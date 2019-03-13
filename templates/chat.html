@@ -229,7 +229,7 @@ We compare different training strategies and evaluate their performance using bo
                var is_why = user_message.trim().startsWith("Why") || user_message.trim().startsWith("why");  // pass to server
                var inp = {"text": user_message, "is_why": is_why};
                $.ajax({
-                      url: 'http://127.0.0.1:5000/api/decode',  //real server address: http://18.222.239.24
+                      url: 'http://3.18.91.191/api/decode',  //real server address: http://18.222.239.24
                       type: 'POST',
                       data: JSON.stringify(inp),
                       contentType: 'application/json; charset=utf-8',
