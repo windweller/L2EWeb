@@ -18,21 +18,19 @@ import pprint
 
 pp = pprint.PrettyPrinter(indent=1)
 
+
 import sys
 
 import platform
 
-# execute this command only on 2.x Python
-if "2." in platform.python_version():
-    reload(sys)
-    sys.setdefaultencoding('utf8')
 
-import os
 from os.path import join as pjoin
 
 import json
 
 from copy import deepcopy as cp
+
+EN_PORT = 12345
 
 np.random.seed(123)
 
@@ -231,7 +229,7 @@ def extract_subphrase(orig_words, parsed_words, extraction_indices, lang="en"):
 use corenlp server (see https://github.com/erindb/corenlp-ec2-startup)
 to parse sentences: tokens, dependency parse
 """
-EN_PORT = 12345
+
 
 def get_parse(sentence, lang="en", depparse=True):
     if lang == 'en':
@@ -274,13 +272,14 @@ def get_parse(sentence, lang="en", depparse=True):
 
 
 class Sentence():
-    def __init__(self, json_sentence, original_sentence, lang):
+    def __init__(self, json_sentence, original_sentence, lang, print_tokens="original"):
         self.json = json_sentence
         self.dependencies = json_sentence["basicDependencies"]
         self.tokens = json_sentence["tokens"]
         self.original_sentence = original_sentence
         self.lang = lang
         self.new_tokens = self.tokens
+        self.print_tokens = print_tokens
 
     def indices(self, word):
         if len(word.split(" ")) > 1:
@@ -297,6 +296,13 @@ class Sentence():
 
     def word(self, index):
         return self.token(index)["word"]
+    
+    def words(self, start_index, end_index):
+        words_string = ""
+        for i in range(start_index, end_index):
+            words_string += self.word(i)
+            words_string += self.token(i)["after"]
+        return words_string
 
     def find_parents(self, index, filter_types=False, needs_verb=False):
         deps = self.find_deps(index, dir="parents", filter_types=filter_types)
@@ -369,10 +375,14 @@ class Sentence():
         return [d["dep"] for d in deps]
 
     def __str__(self):
+        if self.print_tokens == "original":
+            tokens = self.tokens
+        elif self.print_tokens == "new":
+            tokens = self.new_tokens
         if self.lang == "ch":
-            return "".join([t["word"] for t in self.tokens])
+            return "".join([t["word"] for t in tokens])
         else:
-            return " ".join([t["word"] for t in self.tokens])
+            return " ".join([t["word"] for t in tokens])
 
     def get_subordinate_indices(self, acc, explore, depth=0, exclude_indices=[], exclude_types=[]):
         # print("acc: {}\nexplore: {}\ndepth: {}\nexclude_indices: {}".format(acc, explore, depth, exclude_indices))
@@ -526,10 +536,11 @@ class Sentence():
     def cut(self, index):
         new_tokens = []
         for token in self.new_tokens:
+            new_token = dict(token)
             if token["index"] != index:
                 if token["index"] > index:
-                    token["index"] = token["index"] - 1
-                new_tokens.append(token)
+                    new_token["index"] = new_token["index"] - 1
+                new_tokens.append(new_token)
         self.new_tokens = new_tokens
 
     def move(self, original_index, new_index):
@@ -555,122 +566,6 @@ class Sentence():
             new_new_tokens.sort(key=(lambda x: x["index"]))
             self.new_tokens = new_new_tokens
 
-    def find_pair(self, marker, order, previous_sentence, lang="en"):
-        assert (order in ["s2 discourse_marker s1", "any"])
-        # fix me
-        # (this won't quite work if there are multiple matching connections)
-        # (which maybe never happens)
-        S1 = None
-        S2 = None
-        s1_ind = 1000
-        s2_ind = 0
-
-        extracted_pairs = []
-
-        if lang == "en" or lang == "sp":
-            needs_verb = True
-        else:
-            needs_verb = False
-
-        # if " ".join([t["word"] for t in self.tokens])=="The government buried many in mass graves , some above-ground tombs were forced open so bodies could be stacked inside , and others were burned .":
-        #     print " ".join([t["word"] for t in self.tokens])
-        #     print self.get_valid_marker_indices(marker)
-
-        for dep_pattern in dependency_patterns[lang][marker]:
-            # print dep_pattern
-            for marker_index in self.get_valid_marker_indices(marker, dep_pattern):
-                # print marker_index
-                # if " ".join([t["word"] for t in self.tokens])=="The government buried many in mass graves , some above-ground tombs were forced open so bodies could be stacked inside , and others were burned .":
-                #     print marker_index
-
-                # if marker=="and" and "magical" in str(self):
-                #     print marker_index
-
-                s2_candidates = self.get_candidate_S2_indices(marker, marker_index, dep_pattern, needs_verb=needs_verb)
-                # print s2_candidates
-
-                for s2_head_index in s2_candidates:
-                    s2_ind = s2_head_index
-                    # print s2_ind
-                    possible_S1s = []
-
-                    s1_candidates = self.get_candidate_S1_indices(marker, s2_head_index, dep_pattern,
-                                                                  needs_verb=needs_verb)
-
-                    if "acceptable_order" in dep_pattern:
-                        if dep_pattern["acceptable_order"] == "S1 S2":
-                            s1_candidates = [s1_ind for s1_ind in s1_candidates if s1_ind < s2_ind]
-
-                    for s1_head_index in s1_candidates:
-                        # print(marker_index, s2_ind, s1_head_index)
-                        # print s1_head_index
-                        # store S1 if we have one
-                        S1 = self.get_phrase_from_head(
-                            s1_head_index,
-                            exclude_indices=[s2_head_index]
-                        )
-
-                        # print S1
-                        # we'll lose some stuff here because of alignment between
-                        # wikitext tokenization and corenlp tokenization.
-                        # if we can't get a phrase, reject this pair
-                        if not S1:
-                            break
-
-                        # if we are only checking for the "reverse" order, reject anything else
-                        if order == "s2 discourse_marker s1":
-                            if s1_ind < s2_ind:
-                                break
-
-                        possible_S1s.append((s1_head_index, S1))
-
-                        # to do: fix this. it is wrong. we're just grabbing the first if there are multiple matches for the S1 pattern rather than choosing in a principled way
-                        # if len(possible_S1s) > 1:
-                        # could sort by something here...
-                        # possible_S1s = sorted(possible_S1s, key=lambda t: -abs(marker_index - t[0]))
-                        # print self
-                        # print possible_S1s
-                    if len(possible_S1s) > 0:
-                        s1_ind, S1 = possible_S1s[0]
-
-                    # store S2 if we have one
-                    S2 = self.get_phrase_from_head(
-                        s2_head_index,
-                        exclude_indices=[marker_index, s1_ind],
-                        # exclude_types=dependency_patterns[marker]["S1"]
-                    )
-                    # print S2
-
-                    # we'll lose some stuff here because of alignment between
-                    # wikitext tokenization and corenlp tokenization.
-                    # if we can't get a phrase, reject this pair
-                    # update: we fixed some of these with the @ correction
-                    if not S2:
-                        return None
-
-                extracted_pairs.append((S1, S2))
-
-        for S1, S2 in extracted_pairs:
-
-            # if S2 is the whole sentence *and* we're missing S1, let S1 be the previous sentence
-            words_in_marker = marker.split()
-            if S2 and not S1:
-                words_in_sentence = [t["word"] for t in self.tokens if not self.is_punct(t["index"])]
-                words_in_s2 = [t for t in S2.split() if not t in PUNCTUATION]
-                if len(words_in_sentence) - len(words_in_marker) == len(words_in_s2):
-                    S1 = previous_sentence[0].capitalize() + previous_sentence[1:]
-            else:
-                # if we don't choose S1 to be the previous sentence, then
-                # we might have to switch S1 and S2 because of the way the cc conj pattern works
-                if S1 and S2 and "flip" in dep_pattern and dep_pattern["flip"]:
-                    return S2, S1
-
-            if S1 and S2:
-                return S1, S2
-
-        return None
-
-
 def setup_corenlp(lang="en"):
     try:
         test_sentences = {"en": "The quick brown fox jumped over the lazy dog."}
@@ -693,33 +588,6 @@ def setup_corenlp(lang="en"):
 #    	sentence = Sentence(parse, sentence)
 #    	return(sentence.find_pair(marker, "any", previous_sentence))
 
-def depparse_ssplit(sentence, previous_sentence, marker, lang="en"):
-    # print sentence
-    orig_sentence = sentence.encode("utf-8")
-    sentence = sentence.strip()
-    previous_sentence = previous_sentence.strip()
-    sentence = cleanup(sentence, lang)
-
-    parse = get_parse(sentence.encode("utf-8"), lang=lang)
-    if parse:
-        # if "ONU" in str(sentence):
-        #     pp.pprint(parse["tokens"])
-        #     # pp.pprint(parse["basicDependencies"])
-        #     # print(json.dumps(parse["tokens"], indent=4))
-        sentence = Sentence(parse, sentence, lang)
-        # print sentence
-        # print orig_sentence
-        # print len(orig_sentence)
-        # print str(sentence)
-        # print len(str(sentence))
-
-        # print sentence
-        pair = sentence.find_pair(marker, "any", previous_sentence, lang=lang)
-        # print pair
-        # stop
-        return pair
-    else:
-        return None
 
 
 if __name__ == '__main__':

@@ -227,16 +227,29 @@ We compare different training strategies and evaluate their performance using bo
 
           if (user_message.trim().endsWith("because") || user_message.trim().startsWith("Why") || user_message.trim().startsWith("why")) {
 
+               var is_why = user_message.trim().startsWith("Why") || user_message.trim().startsWith("why");  // pass to server
+               var inp = {"text": user_message, "is_why": is_why};
+               $.ajax({
+                      url: 'http://127.0.0.1:5000/api/decode',  //real server address: http://18.222.239.24
+                      type: 'POST',
+                      data: JSON.stringify(inp),
+                      contentType: 'application/json; charset=utf-8',
+                      dataType: 'json',
+                      async: true,
+                      success: function(msg) {
+                          // console.log(msg['output_html'])
+                          post_l2e_message("We see your text as: " + msg['src']);
+                          post_l2e_message("Our response is: " + msg['tgt'])
+                      }
+                  });
+
           } else {
               // 2. Did not end with "because" or start with "Why"
               // failure case
               post_l2e_message("Sorry, you need to start your message with 'Why'/'why' or end your sentence with 'because'");
               return;
           }
-          // 3. Maybe add other things...?
-
-           // TODO: add ajax to the server
-           // TODO: set up CoreNLP server
+          // 3. Maybe add other checks...?
 
       }
 
@@ -248,8 +261,6 @@ We compare different training strategies and evaluate their performance using bo
               return false; // ignore the default event
            }
         });
-
-
 
      </script>
 </body>
