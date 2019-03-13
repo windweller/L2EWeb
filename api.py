@@ -177,7 +177,7 @@ def decode_sent(sent, is_why=False):
         sent = transform_q2s(sent)
     else:
         doc = nltk.word_tokenize(sent)
-        sent = ' '.join([str(w) for w in doc][:-1]) + " ."  # we remove "because".
+        sent = ' '.join([str(w) for w in doc][:-2]) + " ."  # we remove "because ?".
         #  In the website we ask users to end sentence with "because"
         sent = sent.capitalize()
 

@@ -36,6 +36,19 @@ We compare different training strategies and evaluate their performance using bo
         and <strong>cannot</strong> answer general questions. We actively filter out any message that does not end with <strong>because</strong> or lead with <strong>Why</strong>.</p>
       <p>This demo model corresponds to the L2E-Seq2Seq Transformer model we discussed in the paper. The sampling is done with beam size 5 and no additional penalty on length and coverage.</p>
       <p>We provide a few examples below just to get you started: </p>
+
+        <p><strong>Why is the boy crying?</strong></p>
+        <p><strong>Why is the Earth round?</strong></p>
+        <p><strong>Why does the garage door not open?</strong></p>
+        <p> <strong>The large ball crashed right through the table because?</strong></p>
+        <p> <strong>The man can not lift his son because?</strong></p>
+        <p> <strong>He had to stand because?</strong></p>
+
+        <p>We provide the sampled results from Winograd Schema Challenge clauses in our Jupyter Notebook here: <a href="https://nbviewer.jupyter.org/url/3.18.91.191/static/WinogradS2Generation.ipynb">Winograd Generation</a></p>
+        <p>Seq2Seq models are known to be very brittle to small changes in languagae even though they are often trained on large corpora. The model might also generate discriminatory messages even though it is trained on
+        properly published newspaper articles.</p>
+        <p>We hope you enjoy this demo as it fills in a gap that currently most chitchat chatbots cannot even begin to answer why questions.</p>
+
       </div>
   </div>
 
@@ -224,7 +237,7 @@ We compare different training strategies and evaluate their performance using bo
               return  //no follow up processing
           }
 
-          if (user_message.trim().endsWith("because") || user_message.trim().startsWith("Why") || user_message.trim().startsWith("why")) {
+          if (user_message.trim().endsWith("because?") || user_message.trim().endsWith("because ?") || user_message.trim().startsWith("Why") || user_message.trim().startsWith("why")) {
 
                var is_why = user_message.trim().startsWith("Why") || user_message.trim().startsWith("why");  // pass to server
                var inp = {"text": user_message, "is_why": is_why};
@@ -246,7 +259,7 @@ We compare different training strategies and evaluate their performance using bo
           } else {
               // 2. Did not end with "because" or start with "Why"
               // failure case
-              post_l2e_message("Sorry, you need to start your message with 'Why'/'why' or end your sentence with 'because'");
+              post_l2e_message("Sorry, you need to start your message with 'Why'/'why' or end your sentence with 'because?'");
               return;
           }
           // 3. Maybe add other checks...?
