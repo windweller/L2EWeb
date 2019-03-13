@@ -188,3 +188,7 @@ footer ul li a {
 footer ul li a:hover, footer ul li a:focus, footer ul li a:active, footer ul li a.active {
   text-decoration: none;
 }
+
+input:focus {
+    outline: none;
+}

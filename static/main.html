@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>DeepVet: Automating Veterinary Disease Coding</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <!-- Custom fonts for this template -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+
+    <!-- Plugin CSS -->
+
+    <!-- Custom styles for this template -->
+    <link href="stylesheets/new-age.css" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container ml-auto">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">Stanford Laboratory for Machine Learning, Genomics and Health</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <!--<li class="nav-item">-->
+              <!--<a class="nav-link js-scroll-trigger" href="#download">Download</a>-->
+            <!--</li>-->
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#features">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <header class="masthead">
+      <div class="container h-10">
+        <div class="row h-10">
+          <div class="col-lg-12 ml-auto">
+            <!--<div class="header-content mx-auto">-->
+              <h1 class="title-heading">DeepVet: Automating Veterinary Disease Coding</h1>
+            <br>
+            <p>Annotate veterinary clinical notes with SNOMED-CT codes</p>
+            <!--class="mb-5"-->
+              <!--<a href="#download" class="btn btn-outline btn-xl js-scroll-trigger">Start Now for Free!</a>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="demo text-left" id="download">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+              <div>
+                <textarea class="form-control" id="clinicalNotes" rows="4" placeholder="Input text here..."
+                style="height: 300px"></textarea>
+                <select class="form-control" id="exampleSelect">
+                <option>Choose an example...</option>
+                <option>Cancer example</option>
+                <option>Genitourinary disorder example</option>
+                </select>
+                <br>
+                <div class="row ml-auto" id="submitButtonRow">
+                  <button type="button" class="btn btn-primary" id="submitButton">Submit</button>
+                  <!--<div class="spinner-border text-danger ml-3" role="status">-->
+                    <!--<span class="sr-only">Loading...</span>-->
+                  <!--</div>-->
+                </div>
+
+              </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-gray features">
+      <div class="row">
+        <div class="col-6 justify-content-around ml-auto share" id="predictionResult">
+        </div>
+        <div class="section-heading text-left col-4 mx-auto">
+          <h3>Inferring SNOMED-CT codes through the hierarchy</h3>
+           <br>
+          <p class="text-muted">We develop the first large-scale algorithm to automatically predict all 4577 standard veterinary diagnosis codes from free text.</p>
+          <br>
+          <p class="text-muted">We trained our algorithm on a curated dataset of over 100K expert labeled veterinary clinical notes and over one million unlabeled notes.</p>
+          <hr>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="row">
+        <div class="section-heading text-left col-4 ml-auto">
+          <h3>Interpreting result</h3>
+           <br>
+          <p class="text-muted">In order to better understand how DeepVet predicts diagnosis codes from clinical notes, we implement a simple saliency-based interpretation method</p>
+            <hr>
+        </div>
+        <div class="col-5 justify-content-around mx-auto" >
+
+          <div class="row" style="margin-bottom: 1rem" id="top-level-field">
+             <span class="badge badge-danger clickable labels" id="473010000">Hypersensitivity condition</span>
+          </div>
+
+          <div id="interp_result">
+          <p>$PET_NAME$, a 2 year old male neutered boxer , presented to CSU dermatology service for a recheck of <span class="highlight">allergic dermatitis</span> .
+            It was reported that $PET_NAME$ 's  <span class="highlight">pruritus</span> is relatively seasonal , worse in the spring and summer , but does not completely go away
+            in the winter . $PET_NAME$'s main problem  <span class="highlight">areas</span> were his  <span class="highlight">paws</span> and his muzzle .
+          </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-gray">
+      <div class="row">
+        <div class="col-4 justify-content-around ml-auto">
+          <img src="img/best-abstainsion-2.jpg" class="img-fluid" alt="">
+        </div>
+         <div class="section-heading text-left col-4 mx-auto">
+          <h3>Automatic Abstention</h3>
+           <br>
+          <p class="text-muted">DeepVet also learns to abstain in examples when it is uncertain and defers them to human experts, fostering human-machine collaboration.</p>
+           <br>
+           <p class="text-muted">In order to not mislead further clinical research, having the ability to abstain from making very erroneous predictions and ensuring highly precise tagging is an important feature.</p>
+            <hr>
+        </div>
+      </div>
+    </section>
+
+
+     <section class="learnmore" id="contact">
+      <div class="row">
+        <div class="col-4 justify-content-around ml-auto text-center section-heading">
+          <h2>Learn more</h2>
+          <p>Contact: anie@stanford.edu</p>
+        </div>
+        <div class="text-left col-4 mx-auto">
+          <p>
+            <b>Large-scale Generative Modeling to Improve Automated Veterinary Disease Coding.</b> <br>
+          Yuhui Zhang, Allen Nie, and James Zou. <br>
+            <b>NeurISP Machine Learning for Health Workshop (2018).</b>
+          </p> <br>
+          <p> <b> DeepTag: inferring diagnoses from veterinary clinical notes. </b> <br>
+            Allen Nie, Ashley Zehnder, Rodney L. Page, Yuhui Zhang, Arturo Lopez Pineda, Manuel A. Rivas, Carlos D. Bustamante, and James Zou. <br>
+            <b> npj Digital Medicine 1, no. 1 (2018): 60. </b> </b></p>
+          <hr>
+        </div>
+      </div>
+    </section>
+
+    <!--<section class="contact" id="contact">-->
+      <!--<div class="container">-->
+        <!--<h2>We-->
+          <!--<i class="fas fa-heart"></i>-->
+          <!--new friends!</h2>-->
+        <!--<ul class="list-inline list-social">-->
+          <!--<li class="list-inline-item social-twitter">-->
+            <!--<a href="#">-->
+              <!--<i class="fab fa-twitter"></i>-->
+            <!--</a>-->
+          <!--</li>-->
+          <!--<li class="list-inline-item social-facebook">-->
+            <!--<a href="#">-->
+              <!--<i class="fab fa-facebook-f"></i>-->
+            <!--</a>-->
+          <!--</li>-->
+          <!--<li class="list-inline-item social-google-plus">-->
+            <!--<a href="#">-->
+              <!--<i class="fab fa-google-plus-g"></i>-->
+            <!--</a>-->
+          <!--</li>-->
+        <!--</ul>-->
+      <!--</div>-->
+    <!--</section>-->
+
+    <footer>
+      <div class="container">
+        <p>&copy; DeepVet 2018. All Rights Reserved.</p>
+        <!--<ul class="list-inline">-->
+          <!--<li class="list-inline-item">-->
+            <!--<a href="#">Privacy</a>-->
+          <!--</li>-->
+          <!--<li class="list-inline-item">-->
+            <!--<a href="#">Terms</a>-->
+          <!--</li>-->
+          <!--<li class="list-inline-item">-->
+            <!--<a href="#">FAQ</a>-->
+          <!--</li>-->
+        <!--</ul>-->
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="js/new-age.min.js"></script>
+  <script type="text/javascript">
+
+    // Example selection
+    var cancer_example = "$Pet_Name$ is a 10 year old male castrated hound mix that was presented for continuation of chemotherapy for previously diagnosed B-cell multicentric lymphoma. $Pet_Name$ was started on CHOP chemotherapy last week and has been doing very well since receiving doxorubicin. The owners have noted his lymph nodes have gotten much smaller. He has some loose stool, yet improved with metronidazole. Current medications include prednisolone. Assessment: $Pet_Name$ is in a strong partial remission based on today’s physical exam. He is also doing very well since starting chemotherapy. A CBC today was unremarkable and adequate for chemotherapy. She was dispensed oral cyclophosphamide and furosemide that the owners were instructed to give at home.";
+    var metabolism_example = "$Person_Name$ cc : recheck hypercalcemia responding to pred - iCa has dropped - is on 10 milligram twice a day pred 25 milligram twice a day lasix eating human food on own feeling better blood urea nitrogen down from 89 -- > 62 today Vit D still pending wt stable has residual brisket edema from Fluids on Wed patient : Treating symptomatically discontinue fluids since drinking well on own lower pred to 10 milligram once daily and lasix 25 milligram once daily recheck on Tues pred appears to be treating underlying cause so strong suspicion for LSA E. Ellis VMD wt : 62.5 lbs . temperature : 101.3f"
+    var psvg_excample = "$Pet_Name$ initially presented on 9/30 with lethargy and fever. She was diagnosed with bilateral renomegaly. An ultrasound had revealed possible cyst in a small left kidney and probable ureteral obstruction with secondary hydronephrosis of the right kidney. $Pet_Name$ was transfered to our care on the evening of 10/2."
+
+    $('#exampleSelect').change(function(){
+      var data= $(this).val();
+      if (data === "Cancer example") {
+        $("#clinicalNotes").val(cancer_example)
+      } else if (data === "Genitourinary disorder example") {
+          $("#clinicalNotes").val(psvg_excample)
+      } else if (data === "Choose an example...") {
+          $("#clinicalNotes").val("")
+        }
+    });
+
+    var spinning_wheel_html = "<div class=\"spinner-border text-danger ml-3\" role=\"status\" id=\"spinWheel\"><span class=\"sr-only\">Loading...</span></div>";
+
+    // Submission
+    $("#submitButton").click(function() {
+      var text = $("#clinicalNotes").val();
+      var inp = {text: text};
+
+      // add loading spinning
+      $("#submitButtonRow").append(spinning_wheel_html);
+
+      $.ajax({
+          url: 'http://127.0.0.1:5000/api/predict',  //real server address: http://18.222.239.24
+          type: 'POST',
+          data: JSON.stringify(inp),
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
+          async: true,
+          success: function(msg) {
+              //also remove spin wheel
+              $("#spinWheel").remove();
+
+              //first we reset
+              if ($("#predictionResult").children().length > 0) {
+                  $("#predictionResult").empty()
+              }
+              // we then append result
+              $("#predictionResult").append(msg['output_html']);
+              // console.log(msg);
+
+              // display top level label names
+              $("#top-level-field").empty();
+
+              var i;
+              for (i=0; i < msg['top_level_ids'].length; i++) {
+                  $("#top-level-field").append(
+                      '<span class="badge badge-secondary clickable labels" id="'+ msg['top_level_ids'][i] + '">' + msg['top_level_names'][i] + '</span>'
+                  )
+              }
+
+              // then for interpretation, we clean the text, and display the pasted text
+              $("#interp_result").empty().append('<p>' + msg['inputtext'] + '</p>');
+
+
+            $(".clickable, .labels").click(function() {
+              // need to send "this.id" back to server!
+              var inp = {note_body: $("#interp_result").text(),
+                         label_id: this.id};
+
+              console.log(this.id);
+
+              $.ajax({
+                  url: 'http://127.0.0.1:5000/api/interp',  //real server address: http://18.222.239.24
+                  type: 'POST',
+                  data: JSON.stringify(inp),
+                  contentType: 'application/json; charset=utf-8',
+                  dataType: 'json',
+                  async: true,
+                  success: function(msg) {
+                      // console.log(msg['output_html'])
+                      $("#interp_result").empty().append('<p>' + msg['output_html'] + '</p>');
+                      // TODO: add color switching for the button...
+                  }
+              });
+
+          });
+
+          }
+      });
+    });
+
+  </script>
+
+  </body>
+
+</html>

@@ -21,8 +21,7 @@ import pickle
 from onmt.model_builder import build_base_model
 from onmt import inputters
 
-model_file_path = "model/dissent_step_200000.pt"
-# model_file_path = "model/dissent_step_80000.pt"
+model_file_path = "model/dissent_step_80000.pt"
 temp_dir = "/tmp/"
 
 logging.basicConfig(format='[%(asctime)s] %(levelname)s: %(message)s',
@@ -34,6 +33,9 @@ encoder = PhenomenonEncoder(model_file_path, temp_dir, logger)
 decoder = L2EDecoder(encoder)
 
 def decode_sent(sent):
+
+    # TODO: we do preprocessing here
+
     decoded_tups = decoder.decode_sentences([sent])
     print(decoded_tups)
     return decoded_tups[0]
