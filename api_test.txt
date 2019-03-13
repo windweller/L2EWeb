@@ -1,0 +1,2 @@
+http POST http://127.0.0.1:5000/api/decode text="The city councilmen refused the demonstrators a permit ."
+http POST http://127.0.0.1:5000/api/decode text="The city councilmen refused the demonstrators a permit ."
