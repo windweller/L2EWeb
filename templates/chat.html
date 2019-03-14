@@ -265,7 +265,10 @@ We compare different training strategies and evaluate their performance using bo
           // 3. Maybe add other checks...?
       }
 
-      $("#msg_send").click(userEvent);
+      $("#msg_send").click(function () {
+          userEvent();
+          $("#message_input").val("");
+      });
       $("#message_input").bind("keypress", function(e) {
            if (e.keyCode === 13) {
               userEvent();
