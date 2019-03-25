@@ -251,7 +251,8 @@ We compare different training strategies and evaluate their performance using bo
                       async: true,
                       success: function(msg) {
                           // console.log(msg['output_html'])
-                          post_l2e_message("Interpreted as " + msg['src'] + " because ...?");
+                          src_sent = msg['src'].replace(/.\s*$/, "");
+                          post_l2e_message("Interpreted as " + src_sent + " because?");
                           if (msg['tgt'].startsWith("We have internal errors")) {
                               post_l2e_message(msg['tgt']);
                           } else {
