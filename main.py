@@ -34,7 +34,7 @@ def decode():
         print(src)
         print(tgt)
         print(score)
-        return jsonify({'src': src, 'tgt': "because " + tgt, 'score': score}), 201
+        return jsonify({'src': src, 'tgt': tgt, 'score': score}), 201
     except:
         return jsonify({'src': inp, 'tgt': "We have internal errors possibly caused by dependency parsing.", 'score': -100}), 201
 
