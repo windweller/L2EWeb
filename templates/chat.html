@@ -18,15 +18,16 @@
 
 <div class="container">
   <br>
-<h1 class=" text-center main-title">Learning to Explain without Structured Knowledge</h1>
+<h1 class=" text-center main-title">Learning to Explain: Answering Open Domain Why-Questions via Rephrasing</h1>
 <br>
   <div class="row justify-content-md-center">
       <div class="col-10">
     <h2>About L2E</h2>
-    <p>Learning to provide plausible explanations is a challenging but critical goal for language based human-machine interaction because humans often demand explanations of the world.
-  We contribute to the under-explored area of generating natural language explanations for general phenomena.
-We automatically collect large datasets of explanation-phenomenon pairs, which allow us to train modern end-to-end models to generate natural language explanations.
-We compare different training strategies and evaluate their performance using both automatic scores and human ratings.</p>
+    <p>Providing sensible responses to why questions is a challenging but important task for natural conversation.
+Such responses are difficult to generate because in natural conversational dataset, why questions have low overall frequency compare to other types of interactions.
+Training a model directly on dialogue corpus will often lead to the production of degenerate responses such as ``I don't know'' to why questions.
+In our work, we avoid this limitation by reformulating why-question answering task to a sentence completion task and collect a large dataset of explanation-phenomenon pairs automatically, which allow us to train sequence-to-sequence models to generate natural language explanations.
+We compare different training strategies and evaluate their performance using both automatic scores and human ratings, and demonstrate with simple dependency parsing based rephrasing, we can generate sensible, plausible responses to why questions.</p>
   </div>
   </div>
   <div class="row justify-content-md-center">
