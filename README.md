@@ -1,6 +1,8 @@
-# Learning to Explain Corpus
+# Download Learning to Explain Corpus
 
-If you wish to have a chatbot that learns to answer why-questions in a chitchat style, you can train on our corpus! Here is the link to download them:
+If you wish to have a chatbot that learns to answer why-questions in a chitchat style, you can train on our corpus! 
+
+Here is the link to download them:
 
 ```bash
 aws cp s3://learning2explain/ .
