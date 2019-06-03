@@ -1,4 +1,4 @@
-# Setup
+# Web Server Setup
 
 This code depends on an older version of OpenNMT. The version is zipped and uploaded as part
 of this code base.
