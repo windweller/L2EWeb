@@ -5,7 +5,7 @@ If you wish to have a chatbot that learns to answer why-questions in a chitchat 
 Here is the link to download them:
 
 ```bash
-aws s3 cp --no-sign-request --region=us-west-1 s3://learning2explain/ .
+aws s3 cp --recursive --no-sign-request --region=us-west-1 s3://learning2explain/ .
 ```
 
 We present two datasets: `because` and `because_ctx`. The later one includes 5 previous sentences as context.
