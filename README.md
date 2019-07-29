@@ -8,7 +8,7 @@ Here is the link to download them:
 aws s3 cp --recursive --no-sign-request --region=us-west-1 s3://learning2explain/ .
 ```
 
-We present two datasets: `because` and `because_ctx`. The later one includes 5 previous sentences as context.
+We present two datasets: `because` and `because_ctx`. The later one includes 5 previous sentences as context. This command does not require login or authentication.
 
 You can view a list of items from this link: https://s3-us-west-2.amazonaws.com/learning2explain/
 
