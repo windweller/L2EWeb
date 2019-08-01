@@ -58,3 +58,13 @@ sudo python3 main.py
 ```
 
 # Integrate L2E into your system
+
+We have written a simple wrapper around OpenNMT-py (our zipped version). Note that we also sens HTTP call to the Stanford CoreNLP dependency parser implicitly.
+
+```
+from seq2seq import PhenomenonEncoder, L2EDecoder
+encoder = PhenomenonEncoder(model_file_path, temp_dir, logger)
+decoder = L2EDecoder(encoder)
+```
+
+More details on how we build the pipeline are in `api.py`.
