@@ -46,7 +46,7 @@ bash SERVE.sh
 
 Then you want to download the L2E `.pt` model file from the AWS as well and create a folder and save the file to it:
 
-```
+```bash
 mkdir model
 mv ~/learning2explain/models/L2E-final-model/dissent_step_80000.pt model/
 ```
@@ -61,7 +61,7 @@ sudo python3 main.py
 
 We have written a simple wrapper around OpenNMT-py (our zipped version). Note that we also sens HTTP call to the Stanford CoreNLP dependency parser implicitly.
 
-```
+```python
 from seq2seq import PhenomenonEncoder, L2EDecoder
 encoder = PhenomenonEncoder(model_file_path, temp_dir, logger)
 decoder = L2EDecoder(encoder)
