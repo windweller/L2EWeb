@@ -23,6 +23,7 @@ of this code base.
 You can unzip and install that version of OpenNMT through:
 
 ```bash
+cd OpenNMT-py
 pip install -e .
 ```
 
