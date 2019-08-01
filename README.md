@@ -30,8 +30,21 @@ pip install -e .
 Also, we need to set up Stanford CoreNLP server as well and have it running in order to 
 parse the sentences. The way to start the StanfordNLP server process can be followed in https://github.com/erindb/corenlp-ec2-startup.
 
+```
+bash SERVE.sh
+```
+
+Then you want to download the L2E `.pt` model file from the AWS as well and create a folder and save the file to it:
+
+```
+mkdir model
+mv ~/learning2explain/models/L2E-final-model/dissent_step_80000.pt model/
+```
+
 Start the server by calling:
 
 ```bash
 sudo python3 main.py
 ```
+
+# Integrate L2E into your system
