@@ -4,6 +4,12 @@ http://3.18.91.191/
 
 The link will be activee between Aug 1, 2019 and Aug 15, 2019.
 
+# Paper link
+
+Learning to Explain: Answering Why-Questions via Rephrasing (https://arxiv.org/abs/1906.01243)
+
+
+
 # Download Learning to Explain Corpus
 
 If you wish to have a chatbot that learns to answer why-questions in a chitchat style, you can train on our corpus! 
