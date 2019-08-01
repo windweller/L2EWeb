@@ -2,8 +2,6 @@
 
 http://3.18.91.191/
 
-The link will be activee between Aug 1, 2019 and Aug 15, 2019.
-
 # Paper link
 
 Nie, Allen, Erin D. Bennett, and Noah D. Goodman. "Learning to Explain: Answering Why-Questions via Rephrasing." arXiv preprint arXiv:1906.01243 (2019). (https://arxiv.org/abs/1906.01243)
